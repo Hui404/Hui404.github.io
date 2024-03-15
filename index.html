@@ -222,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-15 14:33:53 / 修改时间：20:32:03" itemprop="dateCreated datePublished" datetime="2024-03-15T14:33:53+08:00">2024-03-15</time>
+              <time title="创建时间：2024-03-15 14:33:53 / 修改时间：20:52:30" itemprop="dateCreated datePublished" datetime="2024-03-15T14:33:53+08:00">2024-03-15</time>
             </span>
 
           <br>
@@ -231,7 +231,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -419,7 +419,124 @@
 <h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Encoder_mode.png" alt="图片"></p>
 <h2 id="ADC"><a href="#ADC" class="headerlink" title="ADC"></a>ADC</h2><p>ADC（Analog-Digital Converter）模拟-数字转换器<br>ADC可以将引脚上连续变化的模拟电压转换为内存中存储的数字变量，建立模拟电路到数字电路的桥梁<br>12位逐次逼近型ADC，1us转换时间<br>输入电压范围：0<del>3.3v，转换结果范围0</del>4095（2^12）<br>18个输入通道，可测量16个外部和2个内部信号源<br>规则组和注入组两个转换单元<br>模拟看门狗自动监测输入电压范围  </p>
 <h3 id="ADC基本结构"><a href="#ADC基本结构" class="headerlink" title="ADC基本结构"></a>ADC基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/ADC_Structur.png" alt="图片"> </p>
-<h3 id="输入通道"><a href="#输入通道" class="headerlink" title="输入通道"></a>输入通道</h3><p>|  通道   | ADC1  |  ADC2   | ADC3  |<br>|  :—-:  | :—-:   |  :—-:   |<br>| 通道0  | PA0 | PA0  | PA0 |<br>| 通道1  | PA1 | PA1  | PA1 |<br>| 通道2  | PA2 | PA2  | PA2 |<br>| 通道3  | PA3 | PA3  | PA3 |<br>| 通道4  | PA4 | PA4  | PF6 |<br>| 通道5  | PA5 | PA5  | PF7 |<br>| 通道6  | PA6 | PA6  | PF8 |<br>| 通道7  | PA7 | PA7  | PF9 |<br>| 通道8  | PB0 | PB0  | PF10|<br>| 通道9  | PB1 | PB1  |     |<br>| 通道10 | PC0 | PC0  | PC0 |<br>| 通道11 | PC1 | PC1  | PC1 |<br>| 通道11 | PC2 | PC2  | PC2 |<br>| 通道11 | PC3 | PC3  | PC3 |<br>| 通道11 | PC4 | PC4  |  |<br>| 通道11 | PC5 | PC5  |  |<br>| 通道11 | 温度传感器 |   |  |<br>| 通道11 | 内部参考电压 |   |  |</p>
+<h3 id="输入通道"><a href="#输入通道" class="headerlink" title="输入通道"></a>输入通道</h3><table>
+<thead>
+<tr>
+<th align="center">通道</th>
+<th align="center">ADC1</th>
+<th align="center">ADC2</th>
+<th align="center">ADC3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">通道0</td>
+<td align="center">PA0</td>
+<td align="center">PA0</td>
+<td align="center">PA0</td>
+</tr>
+<tr>
+<td align="center">通道1</td>
+<td align="center">PA1</td>
+<td align="center">PA1</td>
+<td align="center">PA1</td>
+</tr>
+<tr>
+<td align="center">通道2</td>
+<td align="center">PA2</td>
+<td align="center">PA2</td>
+<td align="center">PA2</td>
+</tr>
+<tr>
+<td align="center">通道3</td>
+<td align="center">PA3</td>
+<td align="center">PA3</td>
+<td align="center">PA3</td>
+</tr>
+<tr>
+<td align="center">通道4</td>
+<td align="center">PA4</td>
+<td align="center">PA4</td>
+<td align="center">PF6</td>
+</tr>
+<tr>
+<td align="center">通道5</td>
+<td align="center">PA5</td>
+<td align="center">PA5</td>
+<td align="center">PF7</td>
+</tr>
+<tr>
+<td align="center">通道6</td>
+<td align="center">PA6</td>
+<td align="center">PA6</td>
+<td align="center">PF8</td>
+</tr>
+<tr>
+<td align="center">通道7</td>
+<td align="center">PA7</td>
+<td align="center">PA7</td>
+<td align="center">PF9</td>
+</tr>
+<tr>
+<td align="center">通道8</td>
+<td align="center">PB0</td>
+<td align="center">PB0</td>
+<td align="center">PF10</td>
+</tr>
+<tr>
+<td align="center">通道9</td>
+<td align="center">PB1</td>
+<td align="center">PB1</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">通道10</td>
+<td align="center">PC0</td>
+<td align="center">PC0</td>
+<td align="center">PC0</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">PC1</td>
+<td align="center">PC1</td>
+<td align="center">PC1</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">PC2</td>
+<td align="center">PC2</td>
+<td align="center">PC2</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">PC3</td>
+<td align="center">PC3</td>
+<td align="center">PC3</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">PC4</td>
+<td align="center">PC4</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">PC5</td>
+<td align="center">PC5</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">温度传感器</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">通道11</td>
+<td align="center">内部参考电压</td>
+<td align="center">无</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
 <h3 id="转换时间"><a href="#转换时间" class="headerlink" title="转换时间"></a>转换时间</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Conversion_time.png" alt="图片"> </p>
 <h2 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h2><p>DMA（Direct Memory Access）直接存储器存取<br>DMA可以提供外设和存储器或者存储器和存储器之间的告诉数据传输，无需CPU干预，节省了CPU的资源<br>12个独立可配置的通道：DMA1（7个通道），DMA2（5个通道）<br>每个通道都支持软件触发和特定的硬件触发  </p>
 <h3 id="存储器映像"><a href="#存储器映像" class="headerlink" title="存储器映像"></a>存储器映像</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/memorizer.png" alt="图片"> </p>
@@ -647,7 +764,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">3k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2024/03/14/hello-world/</url>
+    <content><![CDATA[<p>欢迎来到我的博客</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>STM32单片机</title>
+    <url>/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h2 id="STM32简介"><a href="#STM32简介" class="headerlink" title="STM32简介"></a>STM32简介</h2><p>STM32是ST公司基于ARM Cortex-M内核开发的32位微控制器<br>STM32功能强大、性能优异、片上资源丰富、功耗低<br>STM32芯片型号：STM32F103C8T6</p>
+<h3 id="片上资源-外设"><a href="#片上资源-外设" class="headerlink" title="片上资源&#x2F;外设"></a>片上资源&#x2F;外设</h3><table>
+<thead>
+<tr>
+<th align="center">英文缩写</th>
+<th align="center">名称</th>
+<th align="center">英文缩写</th>
+<th align="center">名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">NVIC</td>
+<td align="center">嵌套向量中断控制器</td>
+<td align="center">CAN</td>
+<td align="center">CAN通信</td>
+</tr>
+<tr>
+<td align="center">SysTick</td>
+<td align="center">系统滴答定时器</td>
+<td align="center">USB</td>
+<td align="center">USB通信</td>
+</tr>
+<tr>
+<td align="center">RCC</td>
+<td align="center">复位和时钟控制</td>
+<td align="center">RTC</td>
+<td align="center">实时时钟</td>
+</tr>
+<tr>
+<td align="center">GPIO</td>
+<td align="center">通用IO口</td>
+<td align="center">CRC</td>
+<td align="center">CRC校验</td>
+</tr>
+<tr>
+<td align="center">AFIO</td>
+<td align="center">复用IO口</td>
+<td align="center">PWR</td>
+<td align="center">电源控制</td>
+</tr>
+<tr>
+<td align="center">EXTI</td>
+<td align="center">外部中断</td>
+<td align="center">BKP</td>
+<td align="center">备份寄存器</td>
+</tr>
+<tr>
+<td align="center">TIM</td>
+<td align="center">定时器</td>
+<td align="center">IWDG</td>
+<td align="center">独立看门狗</td>
+</tr>
+<tr>
+<td align="center">ADC</td>
+<td align="center">模数转换器</td>
+<td align="center">WWDG</td>
+<td align="center">窗口看门狗</td>
+</tr>
+<tr>
+<td align="center">DMA</td>
+<td align="center">直接内存访问</td>
+<td align="center">DAC</td>
+<td align="center">数模转换器</td>
+</tr>
+<tr>
+<td align="center">USART</td>
+<td align="center">同步&#x2F;异步串口通信</td>
+<td align="center">SDIO</td>
+<td align="center">SD卡接口</td>
+</tr>
+<tr>
+<td align="center">I2C</td>
+<td align="center">I2C通信</td>
+<td align="center">FSMS</td>
+<td align="center">可变静态存储控制器</td>
+</tr>
+<tr>
+<td align="center">SPI</td>
+<td align="center">SPI通信</td>
+<td align="center">USB OTG</td>
+<td align="center">USB主机接口</td>
+</tr>
+</tbody></table>
+<h3 id="命名规则"><a href="#命名规则" class="headerlink" title="命名规则"></a>命名规则</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/NamingConventions.png" alt="图片"></p>
+<h3 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a>系统结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/SystemStructure.png" alt="图片"></p>
+<h3 id="引脚定义"><a href="#引脚定义" class="headerlink" title="引脚定义"></a>引脚定义</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/PinDefinition.png" alt="图片"></p>
+<h3 id="启动配置"><a href="#启动配置" class="headerlink" title="启动配置"></a>启动配置</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/BOOTset.png" alt="图片"></p>
+<p>GPIO_Structur.png</p>
+<h2 id="GPIO通用输入输出口"><a href="#GPIO通用输入输出口" class="headerlink" title="GPIO通用输入输出口"></a>GPIO通用输入输出口</h2><p>GPOP（General Purpose Input Output）通用输入输出口<br>可配置8种输入输出模式<br>引脚电平：0V~3.3V，部分引脚可容忍5V（即引脚定义图中带FT的IO口）</p>
+<h3 id="GPIO基本结构"><a href="#GPIO基本结构" class="headerlink" title="GPIO基本结构"></a>GPIO基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/GPIO_Structur.png" alt="图片"></p>
+<h3 id="GPIO有关函数"><a href="#GPIO有关函数" class="headerlink" title="GPIO有关函数"></a>GPIO有关函数</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); //配置时钟  </span><br><span class="line">GPIO_InitTypeDef GPIO_InitStructure; //结构体</span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  // 推挽输出 </span><br><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 |GPIO_Pin_4; //选择IO口  </span><br><span class="line">GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; //选择50Mhz 速度  </span><br><span class="line">GPIO_Init(GPIOA, &amp;GPIO_InitStructure);</span><br></pre></td></tr></table></figure>
+
+<h2 id="中断系统"><a href="#中断系统" class="headerlink" title="中断系统"></a>中断系统</h2><p>中断：在主程序运行过程中，出现了特定的中断触发条件（中断源），使得CPU暂停当前正在运行的程序，转而去处理中断程序，处理完成后又返回原来被暂停的位置继续运行<br>中断优先级：当有多个中断源同时申请中断时，CPU会根据中断源的轻重缓急进行裁决，优先响应更加紧急的中断源<br>中断嵌套：当一个中断程序正在运行时，又有新的中断程序，处理完成后依次进行返回  </p>
+<h3 id="中断流程"><a href="#中断流程" class="headerlink" title="中断流程"></a>中断流程</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/EXTI_Process.png" alt="图片"></p>
+<h3 id="STM32中断"><a href="#STM32中断" class="headerlink" title="STM32中断"></a>STM32中断</h3><p>68个可屏蔽中断通道，包含EXTI、TIM、ADC、USART、SPI、I2C、RTC等多个外设<br>使用NVIC统一管理中断，每个中断通道都拥有16个可编程的优先等级，可对优先级进行分组，进一步设置抢占优先级和响应优先级</p>
+<h3 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h3><h4 id="基本机构"><a href="#基本机构" class="headerlink" title="基本机构"></a>基本机构</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/NVIC_Structur.png" alt="图片"></p>
+<h4 id="优先级分组"><a href="#优先级分组" class="headerlink" title="优先级分组"></a>优先级分组</h4><p>NVIC的中断优先级由优先级寄存器的4位（0~15）决定，这4位可以进行切分，分为高n位的抢占优先级和低4-n位的响应优先级<br>抢占优先级高的可以中断嵌套，响应优先级高的可以优先排队，抢占优先级和响应优先级均相同的按中断号排队<br><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Priority_grouping.png" alt="图片"></p>
+]]></content>
+  </entry>
+</search>

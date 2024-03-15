@@ -222,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-03-15 14:33:53 / 修改时间：18:38:35" itemprop="dateCreated datePublished" datetime="2024-03-15T14:33:53+08:00">2024-03-15</time>
+              <time title="创建时间：2024-03-15 14:33:53 / 修改时间：20:32:03" itemprop="dateCreated datePublished" datetime="2024-03-15T14:33:53+08:00">2024-03-15</time>
             </span>
 
           <br>
@@ -231,14 +231,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -404,6 +404,26 @@
 <h3 id="定时器中断基本结构"><a href="#定时器中断基本结构" class="headerlink" title="定时器中断基本结构"></a>定时器中断基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Timer_Structur.png" alt="图片"></p>
 <h3 id="预分频器时序"><a href="#预分频器时序" class="headerlink" title="预分频器时序"></a>预分频器时序</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Precrossover.png" alt="图片"><br>计数器计数频率：CK_CNT &#x3D; CK_PSC &#x2F; (PSC + 1)</p>
 <h3 id="计数器时序"><a href="#计数器时序" class="headerlink" title="计数器时序"></a>计数器时序</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Timer_Timing.png" alt="图片"><br>计数器溢出频率：CK_CNT_OV&#x3D;CK_CNT &#x2F; (ARR + 1)&#x3D;CK_PSC &#x2F; (PSC + 1) &#x2F; (ARR + 1)  </p>
+<h2 id="PWM"><a href="#PWM" class="headerlink" title="PWM"></a>PWM</h2><p>PWM（Pulse Width Modulation）脉冲宽度调制<br>在具有惯性的系统中，可以通过对一些系列脉冲的宽度进行调制，来等效地获得所需的模拟参量，常应用于电机控速等领域  </p>
+<h3 id="PWM参数"><a href="#PWM参数" class="headerlink" title="PWM参数"></a>PWM参数</h3><p>频率 &#x3D; 1 &#x2F; Ts<br>占空比 &#x3D; Ton &#x2F; Ts<br>分辨率 &#x3D; 占空比变化步距<br><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/PWM.png" alt="图片">  </p>
+<h3 id="输出比较模式"><a href="#输出比较模式" class="headerlink" title="输出比较模式"></a>输出比较模式</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/output_modes.png" alt="图片">  </p>
+<h3 id="PWM基本结构"><a href="#PWM基本结构" class="headerlink" title="PWM基本结构"></a>PWM基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/PWM_Structur.png" alt="图片">  </p>
+<h3 id="PWM参数计算"><a href="#PWM参数计算" class="headerlink" title="PWM参数计算"></a>PWM参数计算</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Parameter_calculations.png" alt="图片">  </p>
+<h2 id="输入捕获"><a href="#输入捕获" class="headerlink" title="输入捕获"></a>输入捕获</h2><p>IC（Input Capture）输入捕获<br>输入捕获模式下，当通道输入引脚出现指定电平跳变时，当CNT的值将被锁存到CCR中，可用于测量PWM波形的频率、占空比、脉冲间隔、电平持续时间等参数<br>每个高级定时器和通用定时器都拥有4个输入捕获通道<br>可配置为PWMI模式，同时测量频率和占空比<br>可配合主从触发模式，实现硬件全自动测量  </p>
+<h3 id="频率测量"><a href="#频率测量" class="headerlink" title="频率测量"></a>频率测量</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Frequency_measurements.png" alt="图片">  </p>
+<h3 id="输入捕获基本结构"><a href="#输入捕获基本结构" class="headerlink" title="输入捕获基本结构"></a>输入捕获基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/capture.png" alt="图片">  </p>
+<h3 id="PWMI基本结构"><a href="#PWMI基本结构" class="headerlink" title="PWMI基本结构"></a>PWMI基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/PWMI.png" alt="图片">  </p>
+<h2 id="编码器接口"><a href="#编码器接口" class="headerlink" title="编码器接口"></a>编码器接口</h2><p>Encoder Interface 编码器接口<br>编码器接口可接收增量（正交）编码器的信号，根据编码器旋转产生的正交信号脉冲，自动控制CNT自增或自减，从而指示编码器的位置、旋转方向和旋转速度<br>每个高级定时器和通用定时器都拥有1个编码器接口<br>两个输入引脚借用了输入捕获的通道1和通道2  </p>
+<h3 id="正交编码器"><a href="#正交编码器" class="headerlink" title="正交编码器"></a>正交编码器</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/orthogonal.png" alt="图片">  </p>
+<h3 id="编码器接口基本结构"><a href="#编码器接口基本结构" class="headerlink" title="编码器接口基本结构"></a>编码器接口基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Encoder.png" alt="图片"></p>
+<h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Encoder_mode.png" alt="图片"></p>
+<h2 id="ADC"><a href="#ADC" class="headerlink" title="ADC"></a>ADC</h2><p>ADC（Analog-Digital Converter）模拟-数字转换器<br>ADC可以将引脚上连续变化的模拟电压转换为内存中存储的数字变量，建立模拟电路到数字电路的桥梁<br>12位逐次逼近型ADC，1us转换时间<br>输入电压范围：0<del>3.3v，转换结果范围0</del>4095（2^12）<br>18个输入通道，可测量16个外部和2个内部信号源<br>规则组和注入组两个转换单元<br>模拟看门狗自动监测输入电压范围  </p>
+<h3 id="ADC基本结构"><a href="#ADC基本结构" class="headerlink" title="ADC基本结构"></a>ADC基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/ADC_Structur.png" alt="图片"> </p>
+<h3 id="输入通道"><a href="#输入通道" class="headerlink" title="输入通道"></a>输入通道</h3><p>|  通道   | ADC1  |  ADC2   | ADC3  |<br>|  :—-:  | :—-:   |  :—-:   |<br>| 通道0  | PA0 | PA0  | PA0 |<br>| 通道1  | PA1 | PA1  | PA1 |<br>| 通道2  | PA2 | PA2  | PA2 |<br>| 通道3  | PA3 | PA3  | PA3 |<br>| 通道4  | PA4 | PA4  | PF6 |<br>| 通道5  | PA5 | PA5  | PF7 |<br>| 通道6  | PA6 | PA6  | PF8 |<br>| 通道7  | PA7 | PA7  | PF9 |<br>| 通道8  | PB0 | PB0  | PF10|<br>| 通道9  | PB1 | PB1  |     |<br>| 通道10 | PC0 | PC0  | PC0 |<br>| 通道11 | PC1 | PC1  | PC1 |<br>| 通道11 | PC2 | PC2  | PC2 |<br>| 通道11 | PC3 | PC3  | PC3 |<br>| 通道11 | PC4 | PC4  |  |<br>| 通道11 | PC5 | PC5  |  |<br>| 通道11 | 温度传感器 |   |  |<br>| 通道11 | 内部参考电压 |   |  |</p>
+<h3 id="转换时间"><a href="#转换时间" class="headerlink" title="转换时间"></a>转换时间</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Conversion_time.png" alt="图片"> </p>
+<h2 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h2><p>DMA（Direct Memory Access）直接存储器存取<br>DMA可以提供外设和存储器或者存储器和存储器之间的告诉数据传输，无需CPU干预，节省了CPU的资源<br>12个独立可配置的通道：DMA1（7个通道），DMA2（5个通道）<br>每个通道都支持软件触发和特定的硬件触发  </p>
+<h3 id="存储器映像"><a href="#存储器映像" class="headerlink" title="存储器映像"></a>存储器映像</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/memorizer.png" alt="图片"> </p>
+<h3 id="DMA基本结构"><a href="#DMA基本结构" class="headerlink" title="DMA基本结构"></a>DMA基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/DMA_Structur.png" alt="图片"> </p>
 
       
     </div>
@@ -627,12 +647,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2k</span>
+    <span title="站点总字数">4k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2 分钟</span>
+    <span title="站点阅读时长">3 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
@@ -671,7 +691,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共1.4k字</span>
+  <span class="post-count">博客全站共2.1k字</span>
 </div>
         
 <div class="busuanzi-count">

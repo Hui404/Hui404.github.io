@@ -220,10 +220,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-15 14:33:53 / 修改时间：20:52:30" itemprop="dateCreated datePublished" datetime="2024-03-15T14:33:53+08:00">2024-03-15</time>
+              <time title="创建时间：2024-03-15 14:33:53" itemprop="dateCreated datePublished" datetime="2024-03-15T14:33:53+08:00">2024-03-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-03-18 14:02:26" itemprop="dateModified" datetime="2024-03-18T14:02:26+08:00">2024-03-18</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="本文字数">
@@ -231,7 +237,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>3.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -538,9 +544,20 @@
 </tr>
 </tbody></table>
 <h3 id="转换时间"><a href="#转换时间" class="headerlink" title="转换时间"></a>转换时间</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/Conversion_time.png" alt="图片"> </p>
-<h2 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h2><p>DMA（Direct Memory Access）直接存储器存取<br>DMA可以提供外设和存储器或者存储器和存储器之间的告诉数据传输，无需CPU干预，节省了CPU的资源<br>12个独立可配置的通道：DMA1（7个通道），DMA2（5个通道）<br>每个通道都支持软件触发和特定的硬件触发  </p>
+<h2 id="DMA"><a href="#DMA" class="headerlink" title="DMA"></a>DMA</h2><p>DMA（Direct Memory Access）直接存储器存取<br>DMA可以提供外设和存储器或者存储器和存储器之间的高速数据传输，无需CPU干预，节省了CPU的资源<br>12个独立可配置的通道：DMA1（7个通道），DMA2（5个通道）<br>每个通道都支持软件触发和特定的硬件触发  </p>
 <h3 id="存储器映像"><a href="#存储器映像" class="headerlink" title="存储器映像"></a>存储器映像</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/memorizer.png" alt="图片"> </p>
 <h3 id="DMA基本结构"><a href="#DMA基本结构" class="headerlink" title="DMA基本结构"></a>DMA基本结构</h3><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/DMA_Structur.png" alt="图片"> </p>
+<h2 id="通信接口"><a href="#通信接口" class="headerlink" title="通信接口"></a>通信接口</h2><p>五种通信：USART、I2C、SPI、CAN、USB  </p>
+<h3 id="电平标准"><a href="#电平标准" class="headerlink" title="电平标准"></a>电平标准</h3><p>电平标准是数据1和数据0的表达方式，是传输线缆中人为规定的电压与数据的对应关系，串口常用的电平标准有如下三种：  </p>
+<p>TTL电平：+3.3V或5V表示1，0V表示0<br>RS232电平：-3<del>-15V表示1，+3</del>15V表示0<br>RS485电平：两线压差+2<del>+6V表示1，-2</del>-6V表示0（差分信号） </p>
+<h3 id="串口参数及时序"><a href="#串口参数及时序" class="headerlink" title="串口参数及时序"></a>串口参数及时序</h3><p>波特率：串口通信的速率<br>起始位：标志一个数据帧的开始，固定为低电平<br>数据位：数据帧的有效载荷，1为高电平，0为低电平，低位先行<br>校验位：用于数据验证，根据数据位计算得来<br>停止位：用于数据帧间隔，固定为高电平<br><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/USART_parameter.png" alt="图片">  </p>
+<h3 id="USART"><a href="#USART" class="headerlink" title="USART"></a>USART</h3><p>USART（Universal Synchronous&#x2F;Asynchronous Receiver&#x2F;Transmitter）通用同步&#x2F;异步收发器<br>USART是STM32内部集成的硬件外设，可根据数据寄存器的一个字节数据自动生成数据帧时序，从TX引脚发送出去，也可自动接收RX引脚的数据帧时序，拼接为一个字节数据，存放在数据寄存器里<br>支持同步模式、硬件流控制、DMA、智能卡、IrDA、LIN  </p>
+<h4 id="USART基本结构"><a href="#USART基本结构" class="headerlink" title="USART基本结构"></a>USART基本结构</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/usart_structure.png" alt="图片">  </p>
+<h4 id="数据帧（字长设置）"><a href="#数据帧（字长设置）" class="headerlink" title="数据帧（字长设置）"></a>数据帧（字长设置）</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/USART_Word.png" alt="图片">  </p>
+<h4 id="数据帧（配置停止位）"><a href="#数据帧（配置停止位）" class="headerlink" title="数据帧（配置停止位）"></a>数据帧（配置停止位）</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/USART_Stop.png" alt="图片"> </p>
+<h4 id="起始位侦测"><a href="#起始位侦测" class="headerlink" title="起始位侦测"></a>起始位侦测</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/USART_Start_Bit.png" alt="图片"> </p>
+<h4 id="数据采样"><a href="#数据采样" class="headerlink" title="数据采样"></a>数据采样</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/USART_Sampling.png" alt="图片">  </p>
+<h4 id="波特率发生器"><a href="#波特率发生器" class="headerlink" title="波特率发生器"></a>波特率发生器</h4><p><img src="/2024/03/15/STM32%E5%AD%A6%E4%B9%A0/USART_Baud_Rate.png" alt="图片"> </p>
 
       
     </div>
@@ -764,12 +781,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">3k</span>
+    <span title="站点总字数">4k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3 分钟</span>
+    <span title="站点阅读时长">4 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
@@ -808,7 +825,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共2.1k字</span>
+  <span class="post-count">博客全站共2.5k字</span>
 </div>
         
 <div class="busuanzi-count">

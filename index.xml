@@ -7,7 +7,588 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>xuuuu404</copyright>
-        <lastBuildDate>Wed, 13 Nov 2024 22:13:15 +0800</lastBuildDate><atom:link href="https://Hui404.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 13 Nov 2024 22:21:45 +0800</lastBuildDate><atom:link href="https://Hui404.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Typora使用笔记</title>
+        <link>https://Hui404.github.io/p/typora%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+        <pubDate>Wed, 13 Nov 2024 22:21:45 +0800</pubDate>
+        
+        <guid>https://Hui404.github.io/p/typora%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+        <description>&lt;h1 id=&#34;标题&#34;&gt;标题
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;语法：#一级标题 ##二级标题 ###三级标题&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键：&lt;/p&gt;
+&lt;p&gt;Ctrl+数字1~6可以快速将选中的文本调成对应级别的标题&lt;/p&gt;
+&lt;p&gt;Ctrl+0可以快速将选中的文本调成普通文本&lt;/p&gt;
+&lt;p&gt;Ctrl+加号/减号对应标题级别进行加减&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;段落&#34;&gt;段落
+&lt;/h1&gt;&lt;h2 id=&#34;换行&#34;&gt;换行
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;快捷键：&lt;/p&gt;
+&lt;p&gt;Enter(回车) 		普通换行&lt;/p&gt;
+&lt;p&gt;Shift+Enter			小换行&lt;/p&gt;
+&lt;p&gt;Enter(回车) 		普通换行
+Shift+Enter			小换行&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;分割线&#34;&gt;分割线
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;语法：—或者***+回车&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;hr&gt;
+&lt;hr&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;文字显示&#34;&gt;文字显示
+&lt;/h1&gt;&lt;h2 id=&#34;字体&#34;&gt;字体
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;语法：&lt;/p&gt;
+&lt;p&gt;粗体：用一队星号包裹&lt;/p&gt;
+&lt;p&gt;删除线：用一对双飘号包裹&lt;/p&gt;
+&lt;p&gt;下划线：用一对u标签包裹&lt;/p&gt;
+&lt;p&gt;斜体：用一对单星号包裹&lt;/p&gt;
+&lt;p&gt;高亮：用一对双等号包裹&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;代码&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;**这是粗体**
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;~~这是删除线~~
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;u&amp;gt;这是下划线&amp;lt;/u&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*这是斜体*
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;==这是高亮==
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;mark&amp;gt;这是高亮&amp;lt;/mark&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：
+&lt;strong&gt;这是粗体&lt;/strong&gt;
+&lt;del&gt;这是删除线&lt;/del&gt;
+&lt;u&gt;这是下划线&lt;/u&gt;
+&lt;em&gt;这是斜体&lt;/em&gt;
+==这是高亮==&lt;/p&gt;
+&lt;p&gt;&lt;mark&gt;这是高亮&lt;/mark&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键：&lt;/p&gt;
+&lt;p&gt;加粗：Ctrl + B
+删除线：Shift + Alt +5
+下划线： Ctrl + U
+斜体： Ctrl + L&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;上下标&#34;&gt;上下标
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;代码:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;X^2^
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;H~2~O
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;p&gt;X^2^
+H&lt;del&gt;2&lt;/del&gt;O&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;列表&#34;&gt;列表
+&lt;/h1&gt;&lt;h2 id=&#34;无序列表&#34;&gt;无序列表
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;p&gt;*/-/+/	+空格&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;p&gt;1.同一级别：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;苹果&lt;/li&gt;
+&lt;li&gt;香蕉&lt;/li&gt;
+&lt;li&gt;橘子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2.子集类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一级分类
+&lt;ul&gt;
+&lt;li&gt;二级分类
+&lt;ul&gt;
+&lt;li&gt;三级分类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;可在当前分类中按 ==Tab==键快速分类&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键：Crtl + Shift + ]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;有序列表&#34;&gt;有序列表
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;数字+.+空格
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;这是1&lt;/li&gt;
+&lt;li&gt;这是2&lt;/li&gt;
+&lt;li&gt;这是3&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键： Crtl + Shift + [&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;任务列表&#34;&gt;任务列表
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- [ ] 练字
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- [x] 学习
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;练字&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 学习&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;区块显示&#34;&gt;区块显示
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;gt; + 回车
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;最外层&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;外层&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;内层&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;最内层&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;代码显示&#34;&gt;代码显示
+&lt;/h1&gt;&lt;h2 id=&#34;行内代码&#34;&gt;行内代码
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;`int a = 0;` (是在Esc按键下面的符合)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;int = a;&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键：Ctrl + Shift + `&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;代码块&#34;&gt;代码块
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;```js/java/c#/text
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;内容
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;```
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键：Ctrl +Shift + K&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#include&lt;/span&gt; &lt;span class=&#34;cpf&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;hello word！&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;链接&#34;&gt;链接
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;www.baidu.com
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[百度一下](https://www.baidu.com)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[百度一下](https://www.baidu &amp;#34;https://www.baidu.com&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.baidu.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;www.baidu.com&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.baidu.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;百度一下&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.baidu&#34;  title=&#34;https://www.baidu.com&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;百度一下&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键：Ctrl + K&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在文本内跳转&lt;/p&gt;
+&lt;p&gt;跳转至&lt;a class=&#34;link&#34; href=&#34;#%e6%a0%87%e9%a2%98&#34; &gt;标题&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ps.按住Ctrl键再点击&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;脚注&#34;&gt;脚注
+&lt;/h1&gt;&lt;p&gt;对文本进行解释说明&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[^文本]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;[^文本]:解释说明
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;p&gt;说明&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;图片插入&#34;&gt;图片插入
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;![不显示的文字](图片路径 &amp;#34;图片标题&amp;#34;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;img src=&#34;index/PinDefinition.png&#34; alt=&#34;PinDefinition&#34; title=&#34;引脚定义图&#34; style=&#34;zoom:45%;&#34; /&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;表格&#34;&gt;表格
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;代码：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|   1  |  2  |  3  |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;| :--- | :---| :---|
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|   4  |  5  |  6  |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|   7  |  8  |  9  |
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;|   10 |  11 |  12 |
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;效果：&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;1&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;2&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;3&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;4&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;5&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;6&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;7&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;8&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;9&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;10&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;11&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;12&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;快捷键： Crtl + T&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;说明的说明&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>STM32与SPI通信协议</title>
+        <link>https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/</link>
+        <pubDate>Wed, 13 Nov 2024 22:20:22 +0800</pubDate>
+        
+        <guid>https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/</guid>
+        <description>&lt;h1 id=&#34;spi通信&#34;&gt;SPI通信
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;SPI是由Motorola公司开发的一种通用数据总线&lt;/li&gt;
+&lt;li&gt;四根通信线：SCK、MOSI（主机输出从机输入）、MISO（主机输入从机输出）、SS&lt;/li&gt;
+&lt;li&gt;同步，全双工&lt;/li&gt;
+&lt;li&gt;支持总线挂载多设备（一主多从）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;与iic相比&#34;&gt;与IIC相比
+&lt;/h2&gt;&lt;p&gt;优点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SPI传输速度更快，最大传输速度取决与芯片厂商的设计需求&lt;/li&gt;
+&lt;li&gt;设计简单，不复杂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;SPI的硬件开销大，通信线的个数比较多&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通信过程中，经常会有资源浪费的现象&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;仅支持一主多从，不支持多主机&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;硬件电路&#34;&gt;硬件电路
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112211532747.png&#34;
+	width=&#34;661&#34;
+	height=&#34;378&#34;
+	srcset=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112211532747_hu3868834718008599615.png 480w, https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112211532747_hu12044366043592115174.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112211532747&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;174&#34;
+		data-flex-basis=&#34;419px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;所有的SPI设备的SCK、MOSI、MISO分别连在一起&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;主机另外引出多条SS控制线，分别连接各从机的SS引脚&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;输出的引脚配置为推挽输出，输入引脚配置为浮空或上拉输入&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;一次只能选择一个SS引脚&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;从机未被选中时，该从机的引脚必须切换为高阻态&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数据移位示意图&#34;&gt;数据移位示意图
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112212013567.png&#34;
+	width=&#34;1020&#34;
+	height=&#34;464&#34;
+	srcset=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112212013567_hu16118439876643576550.png 480w, https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112212013567_hu18323273793704367533.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112212013567&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;219&#34;
+		data-flex-basis=&#34;527px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;上升沿：数据移位
+下降沿：采样数据&lt;/p&gt;
+&lt;h2 id=&#34;spi时序基本单元&#34;&gt;SPI时序基本单元
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;起始条件：SS从高电平切换到低电平&lt;/li&gt;
+&lt;li&gt;终止条件：SS从低电平切换到高电平&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112212847743.png&#34;
+	width=&#34;1127&#34;
+	height=&#34;238&#34;
+	srcset=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112212847743_hu7679686944690144064.png 480w, https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112212847743_hu10204094499377820866.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112212847743&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;473&#34;
+		data-flex-basis=&#34;1136px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;SS在低电平期间，表示选用该从机&lt;/p&gt;
+&lt;h2 id=&#34;spi时序图&#34;&gt;SPI时序图
+&lt;/h2&gt;&lt;p&gt;CPHA：时钟相位&lt;/p&gt;
+&lt;h3 id=&#34;模式1&#34;&gt;模式1
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;交换一个字节（模式1）&lt;/li&gt;
+&lt;li&gt;CPOL=0：空闲状态，SCK为低电平&lt;/li&gt;
+&lt;li&gt;CPHA=1：SCK第一个边沿~~（即上升沿）&lt;del&gt;移出数据，第二个边沿&lt;/del&gt;（即下降沿）~~移入数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112213412635.png&#34;
+	width=&#34;1239&#34;
+	height=&#34;400&#34;
+	srcset=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112213412635_hu18275139713912925290.png 480w, https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112213412635_hu16062313568121615482.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112213412635&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;309&#34;
+		data-flex-basis=&#34;743px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SPI没有硬性规定MOSI的默认电平，但是从机的MISO必须置回高阻态&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;模式0用的最多&#34;&gt;模式0（用的最多）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;交换一个字节（模式0）&lt;/li&gt;
+&lt;li&gt;CPOL=0：空闲状态，SCK为低电平&lt;/li&gt;
+&lt;li&gt;CPHA=1：SCK第一个边沿移~~（即上升沿）&lt;del&gt;移入数据，第二个边沿&lt;/del&gt;（即下降沿）~~移出数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112214036407.png&#34;
+	width=&#34;1281&#34;
+	height=&#34;603&#34;
+	srcset=&#34;https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112214036407_hu6285242250140388208.png 480w, https://Hui404.github.io/p/stm32%E4%B8%8Espi%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/index/image-20241112214036407_hu8118670283204772361.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241112214036407&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;212&#34;
+		data-flex-basis=&#34;509px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;为什么模式0最为广泛使用，明明模式1更符合常理？经过网上查证，大概分为以下几点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模式0是最早定义的SPI时序模式，兼容性强&lt;/li&gt;
+&lt;li&gt;模式0采用下降沿移出数据，稳定性好&lt;/li&gt;
+&lt;li&gt;很多人刚开始学的就是模式0，于是就模式0就成了默认模式了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;SPI1挂载在在APB2上
+SPI2和SPI3挂载在APB1上
+GPIO全部都挂载在APB2上&lt;/p&gt;
+&lt;p&gt;配置时钟时要相对应&lt;/p&gt;
+&lt;p&gt;编程技巧&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#define DE_BUG	1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#if	DE_BUG
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;cp&#34;&gt;#define LED P0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#else
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;	&lt;span class=&#34;cp&#34;&gt;#define LED P1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//通过DE_BUG来使用不同的宏
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
         <title>C51单片机与LCD1602显示代码</title>
         <link>https://Hui404.github.io/p/c51%E5%8D%95%E7%89%87%E6%9C%BA%E4%B8%8Elcd1602%E6%98%BE%E7%A4%BA%E4%BB%A3%E7%A0%81/</link>
         <pubDate>Wed, 13 Nov 2024 22:13:15 +0800</pubDate>

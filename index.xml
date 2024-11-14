@@ -7,7 +7,120 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>xuuuu404</copyright>
-        <lastBuildDate>Wed, 13 Nov 2024 22:21:45 +0800</lastBuildDate><atom:link href="https://Hui404.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 14 Nov 2024 17:47:36 +0800</lastBuildDate><atom:link href="https://Hui404.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>W25Q64学习</title>
+        <link>https://Hui404.github.io/p/w25q64%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Thu, 14 Nov 2024 17:47:36 +0800</pubDate>
+        
+        <guid>https://Hui404.github.io/p/w25q64%E5%AD%A6%E4%B9%A0/</guid>
+        <description>&lt;h1 id=&#34;w25qxx简介&#34;&gt;W25Qxx简介
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;W25Qxx系列是一种低成本、小型化、使用简单的&lt;strong&gt;非易失性存储器&lt;/strong&gt;，常应用于数据存储、字库存储、固件程序存储等场景&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;存储介质：Nor Flash（闪存）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;时钟频率：80MHz/160MHz(Dual SPI)/320Mhz(Quad SPI)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;W25Qxx的存储容量为24位地址，“xx”表示了这个芯片不同的存储容量：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q40：   4Mbit / 512KByte	(4Mbit = (4x1024)Kbit = (4096÷8)KByte = 512KByte)
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q80：   8Mbit /   1MByte
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q16：  16Mbit /   2MByte
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q32：  32Mbit /   4MByte
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q64：  64Mbit /   8MByte
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q128：128Mbit /  16MByte
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;W25Q256：256Mbit /  32MByte
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;  &lt;img src=&#34;index/image-20241114175913869.png&#34; alt=&#34;W25Q64&#34; style=&#34;zoom:33%;&#34; /&gt;
+&lt;h1 id=&#34;w25q64接线图&#34;&gt;W25Q64接线图
+&lt;/h1&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/w25q64%E5%AD%A6%E4%B9%A0/index/image-20241114181144298.png&#34;
+	width=&#34;531&#34;
+	height=&#34;212&#34;
+	srcset=&#34;https://Hui404.github.io/p/w25q64%E5%AD%A6%E4%B9%A0/index/image-20241114181144298_hu3777331868768475084.png 480w, https://Hui404.github.io/p/w25q64%E5%AD%A6%E4%B9%A0/index/image-20241114181144298_hu6384606810430075918.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;W25Q64引脚定义&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;250&#34;
+		data-flex-basis=&#34;601px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;引脚&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;功能&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;VCC、GND&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;电源（2.7~3.6V）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;CS（SS）&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;SPI片选&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;CLK (SCK)&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;SPI时钟&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;DI (MOSI)&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;SPI主机输出从机输入&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;DO (MISO&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;SPI主机输入从机输出&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;WP&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;写保护&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;HOLD&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;数据保持&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;硬件电路&#34;&gt;硬件电路
+&lt;/h1&gt;&lt;img src=&#34;index/image-20241114182037820.png&#34; alt=&#34;W25QXX硬件电路图&#34; style=&#34;zoom:67%;&#34; /&gt;
+&lt;h1 id=&#34;flash操作注意事项&#34;&gt;Flash操作注意事项
+&lt;/h1&gt;&lt;p&gt;写入操作时：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写入操作前，必须先进行写使能&lt;/li&gt;
+&lt;li&gt;每个数据位只能由1改写为0，不能由0改写为1&lt;/li&gt;
+&lt;li&gt;写入数据前必须先&lt;strong&gt;擦除&lt;/strong&gt;，擦除后，所有数据位变为1&lt;/li&gt;
+&lt;li&gt;擦除必须按最小擦除单元进行&lt;/li&gt;
+&lt;li&gt;连续写入多字节时，最多写入一页的数据，超过页尾位置的数据，会回到页首覆盖写入&lt;/li&gt;
+&lt;li&gt;写入操作结束后，芯片进入忙状态，不响应新的读写操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;读取操作时：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;直接调用读取时序，无需使能，无需额外操作，没有页的限制，读取操作结束后不会进入忙状态，但不能在忙状态时读取&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>Typora使用笔记</title>
         <link>https://Hui404.github.io/p/typora%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Wed, 13 Nov 2024 22:21:45 +0800</pubDate>

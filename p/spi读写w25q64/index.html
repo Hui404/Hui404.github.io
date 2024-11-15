@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 #include &#34;SPI.h&#34; void MySPI_W_SS(uint8_t BitValue) { GPIO_WriteBit(GPIOC, GPIO_Pin_0, (BitAction)BitValue);\t//BitAction 非0即1 } void MySPI_W_SCK(uint8_t BitValue) { GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);\t//BitAction 非0即1 } void MySPI_W_MOSI(uint8_t BitValue) { GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);\t//BitAction 非0即1 } uint8_t MySPI_R_MISO(void) { return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6); } void MySPI_Init(void) { RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); GPIO_InitTypeDef GPIO_InitStructure; GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; //CS:PC0 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(GPIOC, &amp;GPIO_InitStructure); GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7; // CLK:PA5 DI/MOSI:PA7 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(GPIOA, &amp;GPIO_InitStructure); GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; //MISO:PA6 GPIO_Init(GPIOA, &amp;GPIO_InitStructure); //初始化 赋予默认电平 MySPI_W_SS(1); MySPI_W_SCK(0); } //初始信号 void MySPI_Start(void) { MySPI_W_SS(0); } //终止信号 void MySPI_Stop(void) { MySPI_W_SS(1); } //通过交换一个字节接收到的数据 uint8_t MySPI_SwapByte(uint8_t ByteSend) { uint8_t i, ByteReceive = 0x00; for(i = 0; i &lt; 8; i++) { MySPI_W_MOSI(ByteSend &amp; (0x80 &gt;&gt; i)); //xx &amp; 0x80 取xx的最高位置（0x1000 0000） MySPI_W_SCK(1); if (MySPI_R_MISO() == 1)ByteReceive |= (0x80 &gt;&gt; i); MySPI_W_SCK(0); } return ByteReceive; } 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 #include &#34;W25Q64.h&#34; void W25Q64_Init(void) { MySPI_Init(); } //读取设备ID void W25Q64_ReadID(uint8_t *MID, uint16_t *DID) //MID：厂商8位ID DID:厂商16位设备ID { MySPI_Start(); MySPI_SwapByte(0x9F); *MID = MySPI_SwapByte(0xFF); *DID = MySPI_SwapByte(0xFF); *DID &lt;&lt;= 8; *DID |= MySPI_SwapByte(0xFF); MySPI_Stop(); } 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 #include &#34;usart.h&#34; void NVIC_Configuration(void) { NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); NVIC_InitTypeDef NVIC_InitStructure; NVIC_InitStructure.NVIC_IRQChannel = DEBUG_USART_IRQ; NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1; NVIC_Init(&amp;NVIC_InitStructure); } void USART_Config(void) { GPIO_InitTypeDef GPIO_InitStructure; USART_InitTypeDef USART_InitStructure; //串口GPIO时钟 DEBUG_USART_GPIO_APBxClkCmd(DEBUG_USART_GPIO_CLK, ENABLE); //串口外设时钟 DEBUG_USART_APBxClkCmd(DEBUG_USART_CLK,ENABLE); //将USART Tx的GPIO设置为复用推挽输出模式 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; GPIO_InitStructure.GPIO_Pin= DEBUG_USART_TX_GPIO_PIN; GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(DEBUG_USART_TX_GPIO_PORT,&amp;GPIO_InitStructure); //将USART Rx的GPIO设置为浮空输入模式 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; GPIO_InitStructure.GPIO_Pin= DEBUG_USART_RX_GPIO_PIN; GPIO_Init(DEBUG_USART_RX_GPIO_PORT,&amp;GPIO_InitStructure); USART_InitStructure.USART_BaudRate = DEBUG_USART_BAUDRATR;\t//波特率 USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;\t//硬件流控制 USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;\t//工作模式 发送还是接收 ， 这里是收发一起 USART_InitStructure.USART_Parity = USART_Parity_No;\t//校验位 USART_InitStructure.USART_StopBits = USART_StopBits_1;\t//停止位 USART_InitStructure.USART_WordLength = USART_WordLength_8b; //针数据字长 USART_Init(USART1, &amp;USART_InitStructure); //串口中断优先级配置 NVIC_Configuration(); //使能串口接收中断 USART_ITConfig(DEBUG_USARTx,USART_IT_RXNE,ENABLE); //使能串口 USART_Cmd(DEBUG_USARTx,ENABLE); } /* 发送一个字节 */ void Usart_SendByte(USART_TypeDef* pUSARTx, uint8_t data) { USART_SendData(pUSARTx, data); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } } /* 发送两个字节 */ void Usart_SendHalfWord(USART_TypeDef* pUSARTx, uint16_t data) { uint8_t temp_h,temp_l; temp_h = (data &amp; 0xff00) &gt;&gt; 1; temp_l = data &amp; 0xff; USART_SendData(pUSARTx, temp_h); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } USART_SendData(pUSARTx, temp_l); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } } /* 发送8位数据的数组 */ void Usart_SendArray(USART_TypeDef* pUSARTx, uint8_t *array, uint8_t num) { uint8_t i; for(i=0;i&lt;num;i++) { Usart_SendByte(pUSARTx, *array++); } while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET); } /* 发送字符串 */ void Usart_SendStr(USART_TypeDef* pUSARTx, uint8_t *str) { do { Usart_SendByte(pUSARTx, *str++); }while(*str != &#39;\\0&#39;); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET); } // 串口中断服务函数 void DEBUG_USART_IRQhandler(void) { uint8_t ucTemp; if(USART_GetITStatus(DEBUG_USARTx,USART_IT_RXNE)!=RESET) {\tucTemp = USART_ReceiveData(DEBUG_USARTx); USART_SendData(DEBUG_USARTx,ucTemp); if(ucTemp == &#39;1&#39;) { LED1_ON(); } else LED1_OFF(); }\t} 位操作\n">
+<title>SPI读写W25Q64</title>
+
+<link rel='canonical' href='https://Hui404.github.io/p/spi%E8%AF%BB%E5%86%99w25q64/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="SPI读写W25Q64">
+<meta property='og:description' content=" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 #include &#34;SPI.h&#34; void MySPI_W_SS(uint8_t BitValue) { GPIO_WriteBit(GPIOC, GPIO_Pin_0, (BitAction)BitValue);\t//BitAction 非0即1 } void MySPI_W_SCK(uint8_t BitValue) { GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);\t//BitAction 非0即1 } void MySPI_W_MOSI(uint8_t BitValue) { GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);\t//BitAction 非0即1 } uint8_t MySPI_R_MISO(void) { return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6); } void MySPI_Init(void) { RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); GPIO_InitTypeDef GPIO_InitStructure; GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; //CS:PC0 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(GPIOC, &amp;GPIO_InitStructure); GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7; // CLK:PA5 DI/MOSI:PA7 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(GPIOA, &amp;GPIO_InitStructure); GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; //MISO:PA6 GPIO_Init(GPIOA, &amp;GPIO_InitStructure); //初始化 赋予默认电平 MySPI_W_SS(1); MySPI_W_SCK(0); } //初始信号 void MySPI_Start(void) { MySPI_W_SS(0); } //终止信号 void MySPI_Stop(void) { MySPI_W_SS(1); } //通过交换一个字节接收到的数据 uint8_t MySPI_SwapByte(uint8_t ByteSend) { uint8_t i, ByteReceive = 0x00; for(i = 0; i &lt; 8; i++) { MySPI_W_MOSI(ByteSend &amp; (0x80 &gt;&gt; i)); //xx &amp; 0x80 取xx的最高位置（0x1000 0000） MySPI_W_SCK(1); if (MySPI_R_MISO() == 1)ByteReceive |= (0x80 &gt;&gt; i); MySPI_W_SCK(0); } return ByteReceive; } 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 #include &#34;W25Q64.h&#34; void W25Q64_Init(void) { MySPI_Init(); } //读取设备ID void W25Q64_ReadID(uint8_t *MID, uint16_t *DID) //MID：厂商8位ID DID:厂商16位设备ID { MySPI_Start(); MySPI_SwapByte(0x9F); *MID = MySPI_SwapByte(0xFF); *DID = MySPI_SwapByte(0xFF); *DID &lt;&lt;= 8; *DID |= MySPI_SwapByte(0xFF); MySPI_Stop(); } 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 #include &#34;usart.h&#34; void NVIC_Configuration(void) { NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); NVIC_InitTypeDef NVIC_InitStructure; NVIC_InitStructure.NVIC_IRQChannel = DEBUG_USART_IRQ; NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1; NVIC_Init(&amp;NVIC_InitStructure); } void USART_Config(void) { GPIO_InitTypeDef GPIO_InitStructure; USART_InitTypeDef USART_InitStructure; //串口GPIO时钟 DEBUG_USART_GPIO_APBxClkCmd(DEBUG_USART_GPIO_CLK, ENABLE); //串口外设时钟 DEBUG_USART_APBxClkCmd(DEBUG_USART_CLK,ENABLE); //将USART Tx的GPIO设置为复用推挽输出模式 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; GPIO_InitStructure.GPIO_Pin= DEBUG_USART_TX_GPIO_PIN; GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(DEBUG_USART_TX_GPIO_PORT,&amp;GPIO_InitStructure); //将USART Rx的GPIO设置为浮空输入模式 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; GPIO_InitStructure.GPIO_Pin= DEBUG_USART_RX_GPIO_PIN; GPIO_Init(DEBUG_USART_RX_GPIO_PORT,&amp;GPIO_InitStructure); USART_InitStructure.USART_BaudRate = DEBUG_USART_BAUDRATR;\t//波特率 USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;\t//硬件流控制 USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;\t//工作模式 发送还是接收 ， 这里是收发一起 USART_InitStructure.USART_Parity = USART_Parity_No;\t//校验位 USART_InitStructure.USART_StopBits = USART_StopBits_1;\t//停止位 USART_InitStructure.USART_WordLength = USART_WordLength_8b; //针数据字长 USART_Init(USART1, &amp;USART_InitStructure); //串口中断优先级配置 NVIC_Configuration(); //使能串口接收中断 USART_ITConfig(DEBUG_USARTx,USART_IT_RXNE,ENABLE); //使能串口 USART_Cmd(DEBUG_USARTx,ENABLE); } /* 发送一个字节 */ void Usart_SendByte(USART_TypeDef* pUSARTx, uint8_t data) { USART_SendData(pUSARTx, data); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } } /* 发送两个字节 */ void Usart_SendHalfWord(USART_TypeDef* pUSARTx, uint16_t data) { uint8_t temp_h,temp_l; temp_h = (data &amp; 0xff00) &gt;&gt; 1; temp_l = data &amp; 0xff; USART_SendData(pUSARTx, temp_h); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } USART_SendData(pUSARTx, temp_l); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } } /* 发送8位数据的数组 */ void Usart_SendArray(USART_TypeDef* pUSARTx, uint8_t *array, uint8_t num) { uint8_t i; for(i=0;i&lt;num;i++) { Usart_SendByte(pUSARTx, *array++); } while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET); } /* 发送字符串 */ void Usart_SendStr(USART_TypeDef* pUSARTx, uint8_t *str) { do { Usart_SendByte(pUSARTx, *str++); }while(*str != &#39;\\0&#39;); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET); } // 串口中断服务函数 void DEBUG_USART_IRQhandler(void) { uint8_t ucTemp; if(USART_GetITStatus(DEBUG_USARTx,USART_IT_RXNE)!=RESET) {\tucTemp = USART_ReceiveData(DEBUG_USARTx); USART_SendData(DEBUG_USARTx,ucTemp); if(ucTemp == &#39;1&#39;) { LED1_ON(); } else LED1_OFF(); }\t} 位操作\n">
+<meta property='og:url' content='https://Hui404.github.io/p/spi%E8%AF%BB%E5%86%99w25q64/'>
+<meta property='og:site_name' content='Binhui'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-15T19:55:32&#43;08:00'/><meta property='article:modified_time' content='2024-11-15T19:55:32&#43;08:00'/>
+<meta name="twitter:title" content="SPI读写W25Q64">
+<meta name="twitter:description" content=" 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 #include &#34;SPI.h&#34; void MySPI_W_SS(uint8_t BitValue) { GPIO_WriteBit(GPIOC, GPIO_Pin_0, (BitAction)BitValue);\t//BitAction 非0即1 } void MySPI_W_SCK(uint8_t BitValue) { GPIO_WriteBit(GPIOA, GPIO_Pin_5, (BitAction)BitValue);\t//BitAction 非0即1 } void MySPI_W_MOSI(uint8_t BitValue) { GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)BitValue);\t//BitAction 非0即1 } uint8_t MySPI_R_MISO(void) { return GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6); } void MySPI_Init(void) { RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE); RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE); GPIO_InitTypeDef GPIO_InitStructure; GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; //CS:PC0 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(GPIOC, &amp;GPIO_InitStructure); GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7; // CLK:PA5 DI/MOSI:PA7 GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(GPIOA, &amp;GPIO_InitStructure); GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; //MISO:PA6 GPIO_Init(GPIOA, &amp;GPIO_InitStructure); //初始化 赋予默认电平 MySPI_W_SS(1); MySPI_W_SCK(0); } //初始信号 void MySPI_Start(void) { MySPI_W_SS(0); } //终止信号 void MySPI_Stop(void) { MySPI_W_SS(1); } //通过交换一个字节接收到的数据 uint8_t MySPI_SwapByte(uint8_t ByteSend) { uint8_t i, ByteReceive = 0x00; for(i = 0; i &lt; 8; i++) { MySPI_W_MOSI(ByteSend &amp; (0x80 &gt;&gt; i)); //xx &amp; 0x80 取xx的最高位置（0x1000 0000） MySPI_W_SCK(1); if (MySPI_R_MISO() == 1)ByteReceive |= (0x80 &gt;&gt; i); MySPI_W_SCK(0); } return ByteReceive; } 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 #include &#34;W25Q64.h&#34; void W25Q64_Init(void) { MySPI_Init(); } //读取设备ID void W25Q64_ReadID(uint8_t *MID, uint16_t *DID) //MID：厂商8位ID DID:厂商16位设备ID { MySPI_Start(); MySPI_SwapByte(0x9F); *MID = MySPI_SwapByte(0xFF); *DID = MySPI_SwapByte(0xFF); *DID &lt;&lt;= 8; *DID |= MySPI_SwapByte(0xFF); MySPI_Stop(); } 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 #include &#34;usart.h&#34; void NVIC_Configuration(void) { NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); NVIC_InitTypeDef NVIC_InitStructure; NVIC_InitStructure.NVIC_IRQChannel = DEBUG_USART_IRQ; NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1; NVIC_Init(&amp;NVIC_InitStructure); } void USART_Config(void) { GPIO_InitTypeDef GPIO_InitStructure; USART_InitTypeDef USART_InitStructure; //串口GPIO时钟 DEBUG_USART_GPIO_APBxClkCmd(DEBUG_USART_GPIO_CLK, ENABLE); //串口外设时钟 DEBUG_USART_APBxClkCmd(DEBUG_USART_CLK,ENABLE); //将USART Tx的GPIO设置为复用推挽输出模式 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; GPIO_InitStructure.GPIO_Pin= DEBUG_USART_TX_GPIO_PIN; GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; GPIO_Init(DEBUG_USART_TX_GPIO_PORT,&amp;GPIO_InitStructure); //将USART Rx的GPIO设置为浮空输入模式 GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; GPIO_InitStructure.GPIO_Pin= DEBUG_USART_RX_GPIO_PIN; GPIO_Init(DEBUG_USART_RX_GPIO_PORT,&amp;GPIO_InitStructure); USART_InitStructure.USART_BaudRate = DEBUG_USART_BAUDRATR;\t//波特率 USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;\t//硬件流控制 USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;\t//工作模式 发送还是接收 ， 这里是收发一起 USART_InitStructure.USART_Parity = USART_Parity_No;\t//校验位 USART_InitStructure.USART_StopBits = USART_StopBits_1;\t//停止位 USART_InitStructure.USART_WordLength = USART_WordLength_8b; //针数据字长 USART_Init(USART1, &amp;USART_InitStructure); //串口中断优先级配置 NVIC_Configuration(); //使能串口接收中断 USART_ITConfig(DEBUG_USARTx,USART_IT_RXNE,ENABLE); //使能串口 USART_Cmd(DEBUG_USARTx,ENABLE); } /* 发送一个字节 */ void Usart_SendByte(USART_TypeDef* pUSARTx, uint8_t data) { USART_SendData(pUSARTx, data); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } } /* 发送两个字节 */ void Usart_SendHalfWord(USART_TypeDef* pUSARTx, uint16_t data) { uint8_t temp_h,temp_l; temp_h = (data &amp; 0xff00) &gt;&gt; 1; temp_l = data &amp; 0xff; USART_SendData(pUSARTx, temp_h); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } USART_SendData(pUSARTx, temp_l); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET) { } } /* 发送8位数据的数组 */ void Usart_SendArray(USART_TypeDef* pUSARTx, uint8_t *array, uint8_t num) { uint8_t i; for(i=0;i&lt;num;i++) { Usart_SendByte(pUSARTx, *array++); } while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET); } /* 发送字符串 */ void Usart_SendStr(USART_TypeDef* pUSARTx, uint8_t *str) { do { Usart_SendByte(pUSARTx, *str++); }while(*str != &#39;\\0&#39;); while(USART_GetFlagStatus(pUSARTx, USART_FLAG_TC) == RESET); } // 串口中断服务函数 void DEBUG_USART_IRQhandler(void) { uint8_t ucTemp; if(USART_GetITStatus(DEBUG_USARTx,USART_IT_RXNE)!=RESET) {\tucTemp = USART_ReceiveData(DEBUG_USARTx); USART_SendData(DEBUG_USARTx,ucTemp); if(ucTemp == &#39;1&#39;) { LED1_ON(); } else LED1_OFF(); }\t} 位操作\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu8836338299541961818.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😅</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Binhui</a></h1>
+            <h2 class="site-description">欢迎来到我的博客</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/spi%E8%AF%BB%E5%86%99w25q64/">SPI读写W25Q64</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-11-15</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;SPI.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">MySPI_W_SS</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">BitValue</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_WriteBit</span><span class="p">(</span><span class="n">GPIOC</span><span class="p">,</span> <span class="n">GPIO_Pin_0</span><span class="p">,</span> <span class="p">(</span><span class="n">BitAction</span><span class="p">)</span><span class="n">BitValue</span><span class="p">);</span>	<span class="c1">//BitAction 非0即1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">MySPI_W_SCK</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">BitValue</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_WriteBit</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span> <span class="n">GPIO_Pin_5</span><span class="p">,</span> <span class="p">(</span><span class="n">BitAction</span><span class="p">)</span><span class="n">BitValue</span><span class="p">);</span>	<span class="c1">//BitAction 非0即1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">MySPI_W_MOSI</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">BitValue</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_WriteBit</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span> <span class="n">GPIO_Pin_7</span><span class="p">,</span> <span class="p">(</span><span class="n">BitAction</span><span class="p">)</span><span class="n">BitValue</span><span class="p">);</span>	<span class="c1">//BitAction 非0即1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">uint8_t</span> <span class="nf">MySPI_R_MISO</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nf">GPIO_ReadInputDataBit</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span> <span class="n">GPIO_Pin_6</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">MySPI_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_GPIOA</span><span class="p">,</span> <span class="n">ENABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_GPIOC</span><span class="p">,</span> <span class="n">ENABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitTypeDef</span> <span class="n">GPIO_InitStructure</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span> <span class="o">=</span> <span class="n">GPIO_Mode_Out_PP</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span> <span class="o">=</span> <span class="n">GPIO_Pin_0</span><span class="p">;</span> <span class="c1">//CS:PC0  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span> <span class="o">=</span> <span class="n">GPIO_Speed_50MHz</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_Init</span><span class="p">(</span><span class="n">GPIOC</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span> <span class="o">=</span> <span class="n">GPIO_Mode_Out_PP</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span> <span class="o">=</span> <span class="n">GPIO_Pin_5</span> <span class="o">|</span> <span class="n">GPIO_Pin_7</span><span class="p">;</span> <span class="c1">// CLK:PA5  DI/MOSI:PA7
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span> <span class="o">=</span> <span class="n">GPIO_Speed_50MHz</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_Init</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span> <span class="o">=</span> <span class="n">GPIO_Mode_IPU</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span> <span class="o">=</span> <span class="n">GPIO_Pin_6</span><span class="p">;</span> <span class="c1">//MISO:PA6 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">GPIO_Init</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//初始化 赋予默认电平
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">MySPI_W_SS</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_W_SCK</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//初始信号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">MySPI_Start</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_W_SS</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//终止信号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">MySPI_Stop</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_W_SS</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//通过交换一个字节接收到的数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">uint8_t</span> <span class="nf">MySPI_SwapByte</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">ByteSend</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint8_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">ByteReceive</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">MySPI_W_MOSI</span><span class="p">(</span><span class="n">ByteSend</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mh">0x80</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">));</span> <span class="c1">//xx &amp; 0x80 取xx的最高位置（0x1000 0000）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="nf">MySPI_W_SCK</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="nf">MySPI_R_MISO</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="n">ByteReceive</span> <span class="o">|=</span> <span class="p">(</span><span class="mh">0x80</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">MySPI_W_SCK</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>  <span class="n">ByteReceive</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;W25Q64.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">W25Q64_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_Init</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//读取设备ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">W25Q64_ReadID</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">MID</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="o">*</span><span class="n">DID</span><span class="p">)</span> <span class="c1">//MID：厂商8位ID   DID:厂商16位设备ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_Start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_SwapByte</span><span class="p">(</span><span class="mh">0x9F</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">*</span><span class="n">MID</span> <span class="o">=</span> <span class="nf">MySPI_SwapByte</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">*</span><span class="n">DID</span> <span class="o">=</span> <span class="nf">MySPI_SwapByte</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">*</span><span class="n">DID</span> <span class="o">&lt;&lt;=</span> <span class="mi">8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">*</span><span class="n">DID</span> <span class="o">|=</span> <span class="nf">MySPI_SwapByte</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">MySPI_Stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;usart.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">NVIC_Configuration</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">NVIC_PriorityGroupConfig</span><span class="p">(</span><span class="n">NVIC_PriorityGroup_2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NVIC_InitTypeDef</span> <span class="n">NVIC_InitStructure</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span> <span class="o">=</span> <span class="n">DEBUG_USART_IRQ</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelCmd</span> <span class="o">=</span> <span class="n">ENABLE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelPreemptionPriority</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">USART_Config</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitTypeDef</span> <span class="n">GPIO_InitStructure</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">USART_InitTypeDef</span> <span class="n">USART_InitStructure</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">//串口GPIO时钟
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">DEBUG_USART_GPIO_APBxClkCmd</span><span class="p">(</span><span class="n">DEBUG_USART_GPIO_CLK</span><span class="p">,</span> <span class="n">ENABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//串口外设时钟
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">DEBUG_USART_APBxClkCmd</span><span class="p">(</span><span class="n">DEBUG_USART_CLK</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">//将USART Tx的GPIO设置为复用推挽输出模式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span> <span class="o">=</span> <span class="n">GPIO_Mode_AF_PP</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="o">=</span> <span class="n">DEBUG_USART_TX_GPIO_PIN</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span> <span class="o">=</span> <span class="n">GPIO_Speed_50MHz</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_Init</span><span class="p">(</span><span class="n">DEBUG_USART_TX_GPIO_PORT</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">//将USART Rx的GPIO设置为浮空输入模式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span> <span class="o">=</span> <span class="n">GPIO_Mode_IN_FLOATING</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="o">=</span> <span class="n">DEBUG_USART_RX_GPIO_PIN</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">GPIO_Init</span><span class="p">(</span><span class="n">DEBUG_USART_RX_GPIO_PORT</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_BaudRate</span> <span class="o">=</span> <span class="n">DEBUG_USART_BAUDRATR</span><span class="p">;</span>	<span class="c1">//波特率
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_HardwareFlowControl</span> <span class="o">=</span> <span class="n">USART_HardwareFlowControl_None</span><span class="p">;</span>			<span class="c1">//硬件流控制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_Mode</span> <span class="o">=</span> <span class="n">USART_Mode_Tx</span> <span class="o">|</span> <span class="n">USART_Mode_Rx</span><span class="p">;</span>	<span class="c1">//工作模式 发送还是接收 ， 这里是收发一起
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_Parity</span> <span class="o">=</span> <span class="n">USART_Parity_No</span><span class="p">;</span>	<span class="c1">//校验位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_StopBits</span> <span class="o">=</span> <span class="n">USART_StopBits_1</span><span class="p">;</span>	<span class="c1">//停止位
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_WordLength</span> <span class="o">=</span> <span class="n">USART_WordLength_8b</span><span class="p">;</span> <span class="c1">//针数据字长
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">USART_Init</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">USART_InitStructure</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">//串口中断优先级配置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">NVIC_Configuration</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">//使能串口接收中断
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">USART_ITConfig</span><span class="p">(</span><span class="n">DEBUG_USARTx</span><span class="p">,</span><span class="n">USART_IT_RXNE</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">//使能串口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">USART_Cmd</span><span class="p">(</span><span class="n">DEBUG_USARTx</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 发送一个字节 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Usart_SendByte</span><span class="p">(</span><span class="n">USART_TypeDef</span><span class="o">*</span> <span class="n">pUSARTx</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">USART_SendData</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="nf">USART_GetFlagStatus</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">USART_FLAG_TXE</span><span class="p">)</span> <span class="o">==</span> <span class="n">RESET</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 发送两个字节 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Usart_SendHalfWord</span><span class="p">(</span><span class="n">USART_TypeDef</span><span class="o">*</span> <span class="n">pUSARTx</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint8_t</span> <span class="n">temp_h</span><span class="p">,</span><span class="n">temp_l</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">temp_h</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">&amp;</span> <span class="mh">0xff00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">temp_l</span> <span class="o">=</span> <span class="n">data</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="nf">USART_SendData</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">temp_h</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="nf">USART_GetFlagStatus</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">USART_FLAG_TXE</span><span class="p">)</span> <span class="o">==</span> <span class="n">RESET</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="nf">USART_SendData</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">temp_l</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="nf">USART_GetFlagStatus</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">USART_FLAG_TXE</span><span class="p">)</span> <span class="o">==</span> <span class="n">RESET</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 发送8位数据的数组 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Usart_SendArray</span><span class="p">(</span><span class="n">USART_TypeDef</span><span class="o">*</span> <span class="n">pUSARTx</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">array</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">uint8_t</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">Usart_SendByte</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="o">*</span><span class="n">array</span><span class="o">++</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="nf">USART_GetFlagStatus</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">USART_FLAG_TC</span><span class="p">)</span> <span class="o">==</span> <span class="n">RESET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 发送字符串 */</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Usart_SendStr</span><span class="p">(</span><span class="n">USART_TypeDef</span><span class="o">*</span> <span class="n">pUSARTx</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">Usart_SendByte</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="o">*</span><span class="n">str</span><span class="o">++</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="o">*</span><span class="n">str</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span><span class="p">(</span><span class="nf">USART_GetFlagStatus</span><span class="p">(</span><span class="n">pUSARTx</span><span class="p">,</span> <span class="n">USART_FLAG_TC</span><span class="p">)</span> <span class="o">==</span> <span class="n">RESET</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 串口中断服务函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">DEBUG_USART_IRQhandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">uint8_t</span> <span class="n">ucTemp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="nf">USART_GetITStatus</span><span class="p">(</span><span class="n">DEBUG_USARTx</span><span class="p">,</span><span class="n">USART_IT_RXNE</span><span class="p">)</span><span class="o">!=</span><span class="n">RESET</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>		
+</span></span><span class="line"><span class="cl">		<span class="n">ucTemp</span> <span class="o">=</span> <span class="nf">USART_ReceiveData</span><span class="p">(</span><span class="n">DEBUG_USARTx</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">USART_SendData</span><span class="p">(</span><span class="n">DEBUG_USARTx</span><span class="p">,</span><span class="n">ucTemp</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">		<span class="k">if</span><span class="p">(</span><span class="n">ucTemp</span> <span class="o">==</span> <span class="sc">&#39;1&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">LED1_ON</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span> 
+</span></span><span class="line"><span class="cl">			<span class="nf">LED1_OFF</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>	 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>位操作</p>
+<p>#define PAout(n)  BIT_ADDR(GPIOA_ODR_Addr,n)
+#define PAin(n)   BIT_ADDR(GPIOA_IDR_Addr,n)</p>
+<p>比如：
+PAout(4)   等价于  GPIO_WriteBit(GPIOA, GPIO_Pin_4,  Bit_SET);
+PAin(4)	 等价于  GPIO_WriteBit(GPIOA, GPIO_Pin_4,  Bit_RESET);</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 xuuuu404
+    </section>
+    
+    <section class="powerby">
+        
+            22324 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+  body {
+    background: url(https://Hui404.github.io/background/fengjing.png) no-repeat center top;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+</style>
+
+    </body>
+</html>

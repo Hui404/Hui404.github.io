@@ -7,7 +7,208 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>xuuuu404</copyright>
-        <lastBuildDate>Mon, 18 Nov 2024 18:18:02 +0800</lastBuildDate><atom:link href="https://Hui404.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 19 Nov 2024 23:32:18 +0800</lastBuildDate><atom:link href="https://Hui404.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>IIC通讯协议</title>
+        <link>https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/</link>
+        <pubDate>Tue, 19 Nov 2024 23:32:18 +0800</pubDate>
+        
+        <guid>https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/</guid>
+        <description>&lt;h1 id=&#34;iic通信协议&#34;&gt;IIC通信协议
+&lt;/h1&gt;&lt;p&gt;​		&lt;strong&gt;IIC&lt;/strong&gt;（Inter-Integrated Circuit）是 IIC Bus 简称，中文叫集成电路总线。它是一种&lt;a class=&#34;link&#34; href=&#34;https://so.csdn.net/so/search?q=%e4%b8%b2%e8%a1%8c%e9%80%9a%e4%bf%a1&amp;amp;spm=1001.2101.3001.7020&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;串行通信&lt;/a&gt;总线，使用多主从架构，由飞利浦公司在1980年代为了让主板、嵌入式系统或手机用以连接低速周边设备而发展。&lt;/p&gt;
+&lt;h1 id=&#34;iic物理层&#34;&gt;IIC物理层
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119233811828.png&#34;
+	width=&#34;990&#34;
+	height=&#34;343&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119233811828_hu2802478507479582791.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119233811828_hu13662625509022546334.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;IIC物理层&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;288&#34;
+		data-flex-basis=&#34;692px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;它是一个支持设备的总线&lt;/li&gt;
+&lt;li&gt;一个IIC总线只使用两条总线线路，一条双向串行数据线(SDA)，一条串行时钟线(SCL)&lt;/li&gt;
+&lt;li&gt;每个连接到总线的设备都有一个独立的地址，主机可以利用这个地址进行不同设备之间的访问&lt;/li&gt;
+&lt;li&gt;总线通过上拉电阻接到电源。&lt;strong&gt;当IIC设备空闲时，会输出高阻态，而当所有设备都空闲，都 输出高阻态时，由上拉电阻把总线拉成高电平&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;多个主机同时使用总线时，为了防止数据冲突，会利用仲裁方式决定由哪个设备占用总线&lt;/li&gt;
+&lt;li&gt;具有三种传输模式：标准模式传输速率为100kbit/s，快速模式为400kbit/s，高速模式下可达 3.4Mbit/s，但目前大多IIC设备尚不支持高速模式&lt;/li&gt;
+&lt;li&gt;连接到相同总线的IC数量受到总线的最大电容400pF限制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;iic协议层&#34;&gt;IIC协议层
+&lt;/h1&gt;&lt;p&gt;IIC 的协议定义了通讯的起始和停止信号、数据有效性、响应、仲裁、时钟同步和地址广播等环节&lt;/p&gt;
+&lt;h2 id=&#34;iic的基本读写过程&#34;&gt;IIC的基本读写过程
+&lt;/h2&gt;&lt;p&gt;IIC通讯过程的基本结构&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234214934.png&#34;
+	width=&#34;1004&#34;
+	height=&#34;224&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234214934_hu6898176610190150794.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234214934_hu11877480210656182719.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;写数据&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;448&#34;
+		data-flex-basis=&#34;1075px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234223225.png&#34;
+	width=&#34;1069&#34;
+	height=&#34;239&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234223225_hu1488194388900013243.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234223225_hu6847102744149299407.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;读数据&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;447&#34;
+		data-flex-basis=&#34;1073px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234252852.png&#34;
+	width=&#34;1056&#34;
+	height=&#34;643&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234252852_hu4794938950018308943.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234252852_hu2560673321278737736.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241119234252852&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;164&#34;
+		data-flex-basis=&#34;394px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		这些图表示的是主机和从机通讯时，SDA线的数据包序列
+​		其中S表示由主机的IIC接口产生的传输起始信号(S)，这时连接到IIC总线上的所有从机都会 接收到这个信号。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	起始信号产生后，所有从机就开始等待主机紧接下来广播的从机地址信号(SLAVE_ADDRESS)。 在IIC总线上，每个设备的地址都是唯一的，当主机广播的地址与某个设备地址相同时，这个设 备就被选中了，没被选中的设备将会忽略之后的数据信号。根据IIC协议，这个从机地址可以是 7 位或10位。 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;​		在地址位之后，是传输方向的选择位，该位为0时，表示后面的数据传输方向是由主机传输至从 机，即主机向从机写数据。该位为1时，则相反，即主机由从机读数据。 从机接收到匹配的地址后，主机或从机会返回一个应答(ACK)或非应答(NACK)信号，只有接收 到应答信号后，主机才能继续发送或接收数据。&lt;/p&gt;
+&lt;h3 id=&#34;写数据&#34;&gt;写数据
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234532207.png&#34;
+	width=&#34;998&#34;
+	height=&#34;211&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234532207_hu1217883348226831251.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234532207_hu15363740403244988523.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;写数据&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;472&#34;
+		data-flex-basis=&#34;1135px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		若配置的方向传输位为“写数据”方向，即第一幅图的情况，广播完地址，接收到应答信号后，主机开始正式向从机传输数据(DATA)，数据包的大小为8位，主机每发送完一个字节数据，都 要等待从机的应答信号(ACK)，重复这个过程，可以向从机传输N个数据，这个N没有大小限制。当数据传输结束时，主机向从机发送一个停止传输信号(P)，表示不再传输数据&lt;/p&gt;
+&lt;h3 id=&#34;读数据&#34;&gt;读数据
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234622850.png&#34;
+	width=&#34;1034&#34;
+	height=&#34;244&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234622850_hu15086169270552265711.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234622850_hu9824441153529462598.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;读数据&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;423&#34;
+		data-flex-basis=&#34;1017px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		若配置的方向传输位为“读数据”方向，即第二幅图的情况，广播完地址，接收到应答信号后， 从机开始向主机返回数据(DATA)，数据包大小也为8位，从机每发送完一个数据，都会等待主 机的应答信号(ACK)，重复这个过程，可以返回N个数据，这个N也没有大小限制。当主机希 望停止接收数据时，就向从机返回一个非应答信号(NACK)，则从机自动停止数据传输&lt;/p&gt;
+&lt;h3 id=&#34;读和写数据&#34;&gt;读和写数据
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234722692.png&#34;
+	width=&#34;1036&#34;
+	height=&#34;593&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234722692_hu15307902060346590589.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234722692_hu6789090126411227059.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;读和写的复用格式&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;174&#34;
+		data-flex-basis=&#34;419px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		除了基本的读写，IIC通讯更常用的是复合格式，即第三幅图的情况，该传输过程有两次起始信 号(S)。一般在第一次传输中，主机通过SLAVE_ADDRESS寻找到从设备后，发送一段“数据”， 这段数据通常用于表示从设备内部的寄存器或存储器地址(注意区分它与SLAVE_ADDRESS的 区别)；在第二次的传输中，对该地址的内容进行读或写。也就是说，第一次通讯是告诉从机读 写地址，第二次则是读写的实际内容。&lt;/p&gt;
+&lt;h3 id=&#34;通讯的起始s和停止p信号&#34;&gt;通讯的起始（S）和停止（P）信号
+&lt;/h3&gt;&lt;p&gt;​		上文中提到的起始(S)和停止(P)信号是两种特殊的状态，见图起始和停止信号。当SCL线是高 电平时SDA线从高电平向低电平切换，这个情况表示通讯的起始。当SCL是高电平时SDA线由 低电平向高电平切换，表示通讯的停止。起始和停止信号一般由主机产生。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234842785.png&#34;
+	width=&#34;852&#34;
+	height=&#34;269&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234842785_hu18245517188698082209.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234842785_hu15930474596410432860.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;起始信号和停止信号&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;316&#34;
+		data-flex-basis=&#34;760px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;数据有效性&#34;&gt;数据有效性
+&lt;/h3&gt;&lt;p&gt;​		IIC 使用SDA信号线来传输数据，使用SCL信号线进行数据同步。见图数据有效性。SDA数据 线在SCL的每个时钟周期传输一位数据。传输时，SCL为高电平的时候SDA表示的数据有效， 即此时的SDA为高电平时表示数据“1”，为低电平时表示数据“0”。当SCL为低电平时，SDA 的数据无效，一般在这个时候SDA进行电平切换，为下一次表示数据做好准备&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235021157.png&#34;
+	width=&#34;824&#34;
+	height=&#34;390&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235021157_hu6609485477489496409.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235021157_hu14995443284658083265.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据的有效性&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;211&#34;
+		data-flex-basis=&#34;507px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		每次数据传输都以字节为单位，每次传输的字节数不受限制&lt;/p&gt;
+&lt;h3 id=&#34;地址及数据方向&#34;&gt;地址及数据方向
+&lt;/h3&gt;&lt;p&gt;​		IIC 总线上的每个设备都有自己的独立地址，主机发起通讯时，通过SDA信号线发送设备地址 (SLAVE_ADDRESS)来查找从机。IIC协议规定设备地址可以是7位或10位，实际中7位的地址 应用比较广泛。紧跟设备地址的一个数据位用来表示数据传输方向，它是数据方向位(R/)，第8 位或第11位。数据方向位为“1”时表示主机由从机读数据，该位为“0”时表示主机向从机写 数据&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235115629.png&#34;
+	width=&#34;1036&#34;
+	height=&#34;280&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235115629_hu17463889267196630796.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235115629_hu10512827189470502673.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;地址及数据方向&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;370&#34;
+		data-flex-basis=&#34;888px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		读数据方向时，主机会释放对SDA信号线的控制，由从机控制SDA信号线，主机接收信号，写 数据方向时，SDA由主机控制，从机接收信号&lt;/p&gt;
+&lt;h3 id=&#34;响应应答与非应答&#34;&gt;响应（应答与非应答）
+&lt;/h3&gt;&lt;p&gt;​		IIC 的数据和地址传输都带响应。响应包括“应答(ACK)”和“非应答(NACK)”两种信号。作为 数据接收端时，当设备(无论主从机)接收到IIC传输的一个字节数据或地址后，若希望对方继 续发送数据，则需要向对方发送“应答(ACK)”信号，发送方会继续发送下一个数据；若接收端 希望结束数据传输，则向对方发送“非应答(NACK)”信号，发送方接收到该信号后会产生一个 停止信号，结束信号传输&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235215158.png&#34;
+	width=&#34;1006&#34;
+	height=&#34;467&#34;
+	srcset=&#34;https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235215158_hu14823004254290803984.png 480w, https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235215158_hu16371282118344142152.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;应答与非应答&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;215&#34;
+		data-flex-basis=&#34;517px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;​		传输时主机产生时钟，在第9个时钟时，数据发送端会释放SDA的控制权，由数据接收端控制 SDA，若SDA为高电平，表示非应答信号(NACK)，低电平表示应答信号(ACK)&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>C51串口通信实验</title>
         <link>https://Hui404.github.io/p/c51%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%E5%AE%9E%E9%AA%8C/</link>
         <pubDate>Mon, 18 Nov 2024 18:18:02 +0800</pubDate>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="IIC通信协议 \u200b\tIIC（Inter-Integrated Circuit）是 IIC Bus 简称，中文叫集成电路总线。它是一种串行通信总线，使用多主从架构，由飞利浦公司在1980年代为了让主板、嵌入式系统或手机用以连接低速周边设备而发展。\n">
+<title>IIC通讯协议</title>
+
+<link rel='canonical' href='https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="IIC通讯协议">
+<meta property='og:description' content="IIC通信协议 \u200b\tIIC（Inter-Integrated Circuit）是 IIC Bus 简称，中文叫集成电路总线。它是一种串行通信总线，使用多主从架构，由飞利浦公司在1980年代为了让主板、嵌入式系统或手机用以连接低速周边设备而发展。\n">
+<meta property='og:url' content='https://Hui404.github.io/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/'>
+<meta property='og:site_name' content='Binhui'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-19T23:32:18&#43;08:00'/><meta property='article:modified_time' content='2024-11-19T23:32:18&#43;08:00'/>
+<meta name="twitter:title" content="IIC通讯协议">
+<meta name="twitter:description" content="IIC通信协议 \u200b\tIIC（Inter-Integrated Circuit）是 IIC Bus 简称，中文叫集成电路总线。它是一种串行通信总线，使用多主从架构，由飞利浦公司在1980年代为了让主板、嵌入式系统或手机用以连接低速周边设备而发展。\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu8836338299541961818.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">😅</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Binhui</a></h1>
+            <h2 class="site-description">欢迎来到我的博客</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#iic的基本读写过程">IIC的基本读写过程</a>
+      <ol>
+        <li><a href="#写数据">写数据</a></li>
+        <li><a href="#读数据">读数据</a></li>
+        <li><a href="#读和写数据">读和写数据</a></li>
+        <li><a href="#通讯的起始s和停止p信号">通讯的起始（S）和停止（P）信号</a></li>
+        <li><a href="#数据有效性">数据有效性</a></li>
+        <li><a href="#地址及数据方向">地址及数据方向</a></li>
+        <li><a href="#响应应答与非应答">响应（应答与非应答）</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/">IIC通讯协议</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-11-19</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="iic通信协议">IIC通信协议
+</h1><p>​		<strong>IIC</strong>（Inter-Integrated Circuit）是 IIC Bus 简称，中文叫集成电路总线。它是一种<a class="link" href="https://so.csdn.net/so/search?q=%e4%b8%b2%e8%a1%8c%e9%80%9a%e4%bf%a1&amp;spm=1001.2101.3001.7020"  target="_blank" rel="noopener"
+    >串行通信</a>总线，使用多主从架构，由飞利浦公司在1980年代为了让主板、嵌入式系统或手机用以连接低速周边设备而发展。</p>
+<h1 id="iic物理层">IIC物理层
+</h1><p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119233811828.png"
+	width="990"
+	height="343"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119233811828_hu2802478507479582791.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119233811828_hu13662625509022546334.png 1024w"
+	loading="lazy"
+	
+		alt="IIC物理层"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="288"
+		data-flex-basis="692px"
+	
+></p>
+<ul>
+<li>它是一个支持设备的总线</li>
+<li>一个IIC总线只使用两条总线线路，一条双向串行数据线(SDA)，一条串行时钟线(SCL)</li>
+<li>每个连接到总线的设备都有一个独立的地址，主机可以利用这个地址进行不同设备之间的访问</li>
+<li>总线通过上拉电阻接到电源。<strong>当IIC设备空闲时，会输出高阻态，而当所有设备都空闲，都 输出高阻态时，由上拉电阻把总线拉成高电平</strong></li>
+<li>多个主机同时使用总线时，为了防止数据冲突，会利用仲裁方式决定由哪个设备占用总线</li>
+<li>具有三种传输模式：标准模式传输速率为100kbit/s，快速模式为400kbit/s，高速模式下可达 3.4Mbit/s，但目前大多IIC设备尚不支持高速模式</li>
+<li>连接到相同总线的IC数量受到总线的最大电容400pF限制</li>
+</ul>
+<h1 id="iic协议层">IIC协议层
+</h1><p>IIC 的协议定义了通讯的起始和停止信号、数据有效性、响应、仲裁、时钟同步和地址广播等环节</p>
+<h2 id="iic的基本读写过程">IIC的基本读写过程
+</h2><p>IIC通讯过程的基本结构</p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234214934.png"
+	width="1004"
+	height="224"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234214934_hu6898176610190150794.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234214934_hu11877480210656182719.png 1024w"
+	loading="lazy"
+	
+		alt="写数据"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="448"
+		data-flex-basis="1075px"
+	
+></p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234223225.png"
+	width="1069"
+	height="239"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234223225_hu1488194388900013243.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234223225_hu6847102744149299407.png 1024w"
+	loading="lazy"
+	
+		alt="读数据"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="447"
+		data-flex-basis="1073px"
+	
+></p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234252852.png"
+	width="1056"
+	height="643"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234252852_hu4794938950018308943.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234252852_hu2560673321278737736.png 1024w"
+	loading="lazy"
+	
+		alt="image-20241119234252852"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="164"
+		data-flex-basis="394px"
+	
+></p>
+<p>​		这些图表示的是主机和从机通讯时，SDA线的数据包序列
+​		其中S表示由主机的IIC接口产生的传输起始信号(S)，这时连接到IIC总线上的所有从机都会 接收到这个信号。</p>
+<pre><code>	起始信号产生后，所有从机就开始等待主机紧接下来广播的从机地址信号(SLAVE_ADDRESS)。 在IIC总线上，每个设备的地址都是唯一的，当主机广播的地址与某个设备地址相同时，这个设 备就被选中了，没被选中的设备将会忽略之后的数据信号。根据IIC协议，这个从机地址可以是 7 位或10位。 
+</code></pre>
+<p>​		在地址位之后，是传输方向的选择位，该位为0时，表示后面的数据传输方向是由主机传输至从 机，即主机向从机写数据。该位为1时，则相反，即主机由从机读数据。 从机接收到匹配的地址后，主机或从机会返回一个应答(ACK)或非应答(NACK)信号，只有接收 到应答信号后，主机才能继续发送或接收数据。</p>
+<h3 id="写数据">写数据
+</h3><p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234532207.png"
+	width="998"
+	height="211"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234532207_hu1217883348226831251.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234532207_hu15363740403244988523.png 1024w"
+	loading="lazy"
+	
+		alt="写数据"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="472"
+		data-flex-basis="1135px"
+	
+></p>
+<p>​		若配置的方向传输位为“写数据”方向，即第一幅图的情况，广播完地址，接收到应答信号后，主机开始正式向从机传输数据(DATA)，数据包的大小为8位，主机每发送完一个字节数据，都 要等待从机的应答信号(ACK)，重复这个过程，可以向从机传输N个数据，这个N没有大小限制。当数据传输结束时，主机向从机发送一个停止传输信号(P)，表示不再传输数据</p>
+<h3 id="读数据">读数据
+</h3><p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234622850.png"
+	width="1034"
+	height="244"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234622850_hu15086169270552265711.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234622850_hu9824441153529462598.png 1024w"
+	loading="lazy"
+	
+		alt="读数据"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="423"
+		data-flex-basis="1017px"
+	
+></p>
+<p>​		若配置的方向传输位为“读数据”方向，即第二幅图的情况，广播完地址，接收到应答信号后， 从机开始向主机返回数据(DATA)，数据包大小也为8位，从机每发送完一个数据，都会等待主 机的应答信号(ACK)，重复这个过程，可以返回N个数据，这个N也没有大小限制。当主机希 望停止接收数据时，就向从机返回一个非应答信号(NACK)，则从机自动停止数据传输</p>
+<h3 id="读和写数据">读和写数据
+</h3><p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234722692.png"
+	width="1036"
+	height="593"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234722692_hu15307902060346590589.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234722692_hu6789090126411227059.png 1024w"
+	loading="lazy"
+	
+		alt="读和写的复用格式"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="174"
+		data-flex-basis="419px"
+	
+></p>
+<p>​		除了基本的读写，IIC通讯更常用的是复合格式，即第三幅图的情况，该传输过程有两次起始信 号(S)。一般在第一次传输中，主机通过SLAVE_ADDRESS寻找到从设备后，发送一段“数据”， 这段数据通常用于表示从设备内部的寄存器或存储器地址(注意区分它与SLAVE_ADDRESS的 区别)；在第二次的传输中，对该地址的内容进行读或写。也就是说，第一次通讯是告诉从机读 写地址，第二次则是读写的实际内容。</p>
+<h3 id="通讯的起始s和停止p信号">通讯的起始（S）和停止（P）信号
+</h3><p>​		上文中提到的起始(S)和停止(P)信号是两种特殊的状态，见图起始和停止信号。当SCL线是高 电平时SDA线从高电平向低电平切换，这个情况表示通讯的起始。当SCL是高电平时SDA线由 低电平向高电平切换，表示通讯的停止。起始和停止信号一般由主机产生。</p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234842785.png"
+	width="852"
+	height="269"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234842785_hu18245517188698082209.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119234842785_hu15930474596410432860.png 1024w"
+	loading="lazy"
+	
+		alt="起始信号和停止信号"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="316"
+		data-flex-basis="760px"
+	
+></p>
+<h3 id="数据有效性">数据有效性
+</h3><p>​		IIC 使用SDA信号线来传输数据，使用SCL信号线进行数据同步。见图数据有效性。SDA数据 线在SCL的每个时钟周期传输一位数据。传输时，SCL为高电平的时候SDA表示的数据有效， 即此时的SDA为高电平时表示数据“1”，为低电平时表示数据“0”。当SCL为低电平时，SDA 的数据无效，一般在这个时候SDA进行电平切换，为下一次表示数据做好准备</p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235021157.png"
+	width="824"
+	height="390"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235021157_hu6609485477489496409.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235021157_hu14995443284658083265.png 1024w"
+	loading="lazy"
+	
+		alt="数据的有效性"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="211"
+		data-flex-basis="507px"
+	
+></p>
+<p>​		每次数据传输都以字节为单位，每次传输的字节数不受限制</p>
+<h3 id="地址及数据方向">地址及数据方向
+</h3><p>​		IIC 总线上的每个设备都有自己的独立地址，主机发起通讯时，通过SDA信号线发送设备地址 (SLAVE_ADDRESS)来查找从机。IIC协议规定设备地址可以是7位或10位，实际中7位的地址 应用比较广泛。紧跟设备地址的一个数据位用来表示数据传输方向，它是数据方向位(R/)，第8 位或第11位。数据方向位为“1”时表示主机由从机读数据，该位为“0”时表示主机向从机写 数据</p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235115629.png"
+	width="1036"
+	height="280"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235115629_hu17463889267196630796.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235115629_hu10512827189470502673.png 1024w"
+	loading="lazy"
+	
+		alt="地址及数据方向"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="370"
+		data-flex-basis="888px"
+	
+></p>
+<p>​		读数据方向时，主机会释放对SDA信号线的控制，由从机控制SDA信号线，主机接收信号，写 数据方向时，SDA由主机控制，从机接收信号</p>
+<h3 id="响应应答与非应答">响应（应答与非应答）
+</h3><p>​		IIC 的数据和地址传输都带响应。响应包括“应答(ACK)”和“非应答(NACK)”两种信号。作为 数据接收端时，当设备(无论主从机)接收到IIC传输的一个字节数据或地址后，若希望对方继 续发送数据，则需要向对方发送“应答(ACK)”信号，发送方会继续发送下一个数据；若接收端 希望结束数据传输，则向对方发送“非应答(NACK)”信号，发送方接收到该信号后会产生一个 停止信号，结束信号传输</p>
+<p><img src="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235215158.png"
+	width="1006"
+	height="467"
+	srcset="/p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235215158_hu14823004254290803984.png 480w, /p/iic%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE/index/image-20241119235215158_hu16371282118344142152.png 1024w"
+	loading="lazy"
+	
+		alt="应答与非应答"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="215"
+		data-flex-basis="517px"
+	
+></p>
+<p>​		传输时主机产生时钟，在第9个时钟时，数据发送端会释放SDA的控制权，由数据接收端控制 SDA，若SDA为高电平，表示非应答信号(NACK)，低电平表示应答信号(ACK)</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 xuuuu404
+    </section>
+    
+    <section class="powerby">
+        
+            22324 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+  body {
+    background: url(https://Hui404.github.io/background/fengjing.png) no-repeat center top;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+</style>
+
+    </body>
+</html>
